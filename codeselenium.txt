@@ -1,0 +1,125 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+ 
+import java.net.MalformedURLException;
+import java.net.URL;
+ 
+@Listeners({util.Listener.class})
+class FirstTestScriptUsingSeleniumGrid {
+ 
+  public String username = "YOUR USERNAME";
+  public String accesskey = "YOUR ACCESSKEY";
+  public static RemoteWebDriver driver = null;
+  public String gridURL = "@hub.lambdatest.com/wd/hub";
+ 
+  @BeforeTest
+  public void setUp() throws Exception {
+      DesiredCapabilities capabilities = new DesiredCapabilities();
+      capabilities.setCapability("browserName", "chrome");
+      capabilities.setCapability("version", "94.0");
+      capabilities.setCapability("platform", "win10"); // If this cap isn't specified, it will just get the any available one
+      capabilities.setCapability("build", "FirstTestScript");
+      capabilities.setCapability("name", "FirstTestScriptSample");
+      try {
+          driver = new RemoteWebDriver(new URL("https://" + username + ":" + accesskey + gridURL), capabilities);
+      } catch (MalformedURLException e) {
+          System.out.println("Invalid grid URL");
+      } catch (Exception e) {
+          System.out.println(e.getMessage());
+      }
+  }
+ 
+  @Test
+  public void firstTestCase() {
+      try {
+          System.out.println("Logging into Lambda Test Sign Up Page");
+          driver.get("https://accounts.lambdatest.com/register");
+          WebElement pageHeader= driver.findElement(By.xpath("//a[text()='Sign In']"));
+          pageHeader.click();
+          System.out.println("Clicked on the Sign In Button.");
+      } catch (Exception e) {
+ 
+      }
+   }
+ 
+  @AfterTest
+  public void closeBrowser() {
+      driver.close();
+      System.out.println("The driver has been closed.");
+  }
+}
+
+
+
+
+
+package mobapptest;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class demo {
+	WebDriver driver;
+ @BeforeTest
+ public void Test1() throws InterruptedException {
+	 	System.setProperty("webdriver.chrome.driver", "C:\\selenium\\chromedriver_win32\\chromedriver.exe");
+	 	driver = new ChromeDriver(); 
+		driver.get("http://www.voot.com/");
+		driver.manage().window().maximize();
+		Thread.sleep(2000);
+ }
+ @Test
+ public void Test2() throws InterruptedException {
+	 	driver.findElement(By.xpath("//div[@class='MuiAvatar-root-136 MuiAvatar-colorDefault-137 withRouter-UserDropdownMenu--avatar-120']")).click();
+		WebElement dropdownlist = driver.findElement(By.className("withRouter-UserDropdownMenu--dropDownContent-124"));
+		WebElement login = dropdownlist.findElement(By.xpath("//li[@class='MuiListItem-root-143 MuiListItem-default-146 MuiListItem-gutters-151 withRouter-UserDropdownMenu--ListItem-126']"));
+		Thread.sleep(500);
+		login.click();
+		Thread.sleep(200);
+	/*	WebElement register1 = driver.findElement(By.className("jss1416"));
+		register1.findElement(By.tagName("p")).click();
+		driver.findElement(By.id("mobile number")).sendKeys("8618669962");
+		*/
+		WebElement iframe = driver.findElement(By.xpath("//iframe[@title='User Sync']"));
+		iframe.findElement(By.xpath("//img[@alt='email-icon']|//img[@src='/images/icon_mail_purple.svg']")).click();
+		Thread.sleep(100);
+		try {
+		WebElement emailprovide = driver.findElement(By.name("email"));
+		emailprovide.sendKeys("dg7040566@gmail.com",Keys.ENTER);
+		WebElement password = driver.findElement(By.name("jss1976"));
+		password.findElement(By.id("password")).sendKeys("Deepak9962",Keys.ENTER);
+		System.out.println("Test2 passed");
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+  }
+ /*@Test
+ /*public void Test3() throws InterruptedException {
+	    driver.findElement(By.xpath("//div[@class='MuiAvatar-root-136 MuiAvatar-colorDefault-137 withRouter-UserDropdownMenu--avatar-120']")).click();
+		WebElement dropdownlist = driver.findElement(By.className("withRouter-UserDropdownMenu--dropDownContent-124"));
+		WebElement myaccount = dropdownlist.findElement(By.xpath("//li[@class='MuiListItem-root-143 MuiListItem-default-146 MuiListItem-gutters-151 withRouter-UserDropdownMenu--ListItem-126']"));
+		Thread.sleep(50);
+		String username = myaccount.getText();
+		if (username == "deepak" ){
+				System.out.println("Test3 passed");
+		}
+ }*/
+
+ @AfterTest
+ public void Testfinal() {
+	// driver.quit();
+ }
+}
